@@ -1,0 +1,285 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block title %}Appointment Details - TEREZIYA Polyclinic {% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto p-4">
+    <!-- Go Back Button -->
+    <div class="flex justify-self-start items-center justify-start mb-3">
+        <a href="javascript:history.back()" 
+        class="inline-block px-4 py-2 bg-gray-600 text-white rounded-md font-semibold hover:bg-gray-700 transition">
+            Go Back
+        </a>
+    </div>
+
+    <div class="bg-green-600 rounded shadow-lg p-2 flex flex-col items-center justify-center text-center mb-2">
+        <h2 class="text-2xl md:text-sm font-bold text-white text-center uppercase">Appointment Details</h2>
+    </div>
+
+    <!-- Main Content -->
+    <main class="py-4">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-lg p-4">
+            <h2 class="text-3xl md:text-lg font-semibold text-center text-gray-800 mb-3">Appointment for 
+                {% if appointment.patient_email %}
+                    {{ appointment.patient_email }}
+                {% else %}
+                    {{ appointment.patient.username }}
+                {% endif %}
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Patient Information -->
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Patient Information</h3>
+                    <p><strong>Name:</strong> 
+                        {% if appointment.patient_email %}
+                            {{ appointment.patient_email }}
+                        {% else %}
+                            {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}
+                        {% endif %}
+                    </p>
+                    <p><strong>Email:</strong> 
+                        {% if appointment.patient_email %}
+                            <a class="text-blue-700 underline" href="mailto:{{ appointment.patient_email }}">{{ appointment.patient_email }}</a>
+                        {% else %}
+                            <a class="text-blue-700 underline" href="mailto:{{ appointment.patient.email }}">{{ appointment.patient.email }}</a>
+                        {% endif %}
+                    </p>
+                    <p><strong>Phone:</strong> 
+                        {% if appointment.patient_phone %}
+                            {{ appointment.patient_phone }}
+                        {% else %}
+                            {{ appointment.patient.phone_number }}
+                        {% endif %}
+                    </p>
+                </div>
+
+                <!-- Doctor Information -->
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Doctor Information</h3>
+                    <p><strong>Doctor Name: </strong> Dr. {{ appointment.doctor.first_name }} {{ appointment.doctor.last_name }}</p>
+                    <p><strong>Specialty: </strong> {{ appointment.doctor.specialty }}</p>
+                    <p><strong>Email: </strong><a class="text-blue-700 underline" href="mailto:{{ appointment.doctor.email }}">{{ appointment.doctor.email }}</a></p>
+                    <p><strong>Phone number: </strong><a class="text-blue-800 underline" href="tel:{{ appointment.doctor.phone }}">{{ appointment.doctor.phone }}</a></p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+                <!-- Appointment Details -->
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Appointment Details</h3>
+                    <p><strong>Clinic:</strong> {{ appointment.clinic.name }}</p>
+                    <p><strong>Date:</strong> {{ appointment.date }}</p>
+                    <p><strong>Time:</strong> {{ appointment.time }}</p>
+                    <p><strong>Status:</strong> <span class="text-lg {% if appointment.status == 'confirmed' %}text-green-600{% else %}text-red-600{% endif %}">{{ appointment.status|capfirst }}</span></p>
+                </div>
+
+                <!-- Ticket & QR Code -->
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Ticket Information</h3>
+                    <p><strong>Ticket ID:</strong> {{ appointment.ticket_id }}</p>
+                    <p><strong>Issued At:</strong> {{ appointment.issued_at }}</p>
+                    <div class="mt-4">
+                        <strong>QR Code:</strong>
+                        {% if appointment.qr_code %}
+                        <div class="flex justify-center mt-2">
+                            <img src="{{ appointment.qr_code.url }}" alt="QR Code" class="h-32 w-32 object-cover rounded-md shadow-md">
+                        </div>
+                        {% else %}
+                        <p class="text-gray-600">QR Code not generated.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <!-- Uncancel / Cancel / Confirm Actions -->
+                {% if appointment.status == 'pending' %}
+                <div class="mt-4 flex flex-wrap items-end justify-evenly">
+                    <button onclick="cancelAppointment(event, '{{appointment.ticket_id}}')" class="px-6 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-all">
+                        <i class="fas fa-cancel text-xl"></i>
+                        <span class="hidden md:inline">Cancel Appointment</span>
+                    </button>
+
+                    <button onclick="confirmAppointment(event, '{{appointment.ticket_id}}')" class="px-6 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all">
+                        <i class="fas fa-check-circle text-xl"></i>
+                        <span class="hidden md:inline">Confirm Appointment</span>
+                    </button>
+                </div>
+
+                {% elif appointment.status == 'confirmed' %}
+                <div class="mt-4 flex flex-wrap items-end justify-evenly">
+                    <button onclick="cancelAppointment(event, '{{appointment.ticket_id}}')" class="px-6 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-all">
+                        <i class="fas fa-cancel text-xl"></i>
+                        <span class="hidden md:inline">Cancel Appointment</span>
+                    </button>
+                </div>
+
+                {% elif appointment.status == 'cancelled' %}
+                <div class="mt-4 flex flex-col">
+                    <p class="text-lg text-gray-600 text-center">This appointment has been cancelled.</p>
+                    
+                    <div class="mt-2 flex flex-wrap items-center justify-evenly">
+                        <button onclick="uncancelAppointment(event, '{{appointment.ticket_id}}')"
+                            class="px-6 py-2 bg-purple-600 text-white rounded-lg shadow-md hover:bg-purple-700 transition-all">
+                            <i class="fas fa-paper-plane text-xl"></i>
+                            <span class="hidden md:inline">Uncancel</span>
+                        </button>
+
+                        <button onclick="confirmAppointment(event, '{{appointment.ticket_id}}')" class="px-6 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all">
+                            <i class="fas fa-check-circle text-xl"></i>
+                            <span class="hidden md:inline">Confirm Appointment</span>
+                        </button>
+                    </div>
+                </div>
+  
+                {% else %}
+                <p class="text-sm text-gray-600">This appointment is already {{ appointment.status }}.</p>
+                {% endif %}
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function cancelAppointment(event, ticket_id) {
+            event.preventDefault(); 
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "⚠ This appointment will be cancelled!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/appointments/${ticket_id}/update-status/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        body: new URLSearchParams({
+                            'cancel': 'true',
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Cancelled!',
+                                text: data.message,
+                            }).then(() => {
+                                location.reload();  // Reload the page to see the changes
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: data.message,
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        function uncancelAppointment(event, ticket_id) {
+            console.log("Uncancel appointment triggered! on -- Ticket ID: ", ticket_id);
+            event.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "⚠ This appointment will be reactivated!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, reactivate it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/appointments/${ticket_id}/reschedule/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Reactivated!',
+                                text: data.message,
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: data.message,
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        function confirmAppointment(event, ticket_id) {
+            event.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This appointment will be confirmed and the patient will be notified immediately!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#14661f',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, confirm it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/appointments/${ticket_id}/update-status/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: new URLSearchParams({
+                            'confirm': 'true',
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Confirmed!',
+                                text: data.message,
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: data.message,
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+
+</div>
+{% endblock %}
+
+{% block footer %}
+{% include "admin_footer.html" %}
+{% endblock %}

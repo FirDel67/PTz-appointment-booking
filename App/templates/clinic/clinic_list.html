@@ -1,0 +1,36 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block title %}Clinic Details - TEREZIYA Polyclinic {% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto p-4">
+
+    <div class="bg-repeat-round rounded shadow-lg p-2 flex flex-col items-center justify-center text-center mb-4">
+        <h1 class="text-2xl font-semibold text-gray-800 uppercase">Clinic Details</h1>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6 mb-4">
+        <h2 class="text-xl font-bold text-gray-700">{{ clinic.name }}</h2>
+        <p class="text-gray-600 mt-2"><strong>Address:</strong> {{ clinic.address }}</p>
+        <p class="text-gray-600 mt-2"><strong>Phone:</strong> <a href="tel:{{ clinic.phone }}" class="text-blue-600 hover:underline">{{ clinic.phone }}</a></p>
+        <p class="text-gray-600 mt-2"><strong>Email:</strong> <a href="mailto:{{ clinic.email }}" class="text-blue-600 hover:underline">{{ clinic.email }}</a></p>
+        <p class="text-gray-600 mt-2"><strong>Description:</strong> {{ clinic.description }}</p>
+        <p class="text-gray-600 mt-2"><strong>Opening Hours:</strong> {{ clinic.opening_hours }}</p>
+
+        <div class="flex flex-wrap items-center mt-2 text-blue-600">
+            <i class="fa fa-globe text-2xl m-1"></i>
+            <a href="https://polycliniquetereziya.bi/" target="_blank" class="m-1 hover:underline font-bold text-2xl">Visit our Website</a>
+        </div>
+
+        <div class="flex items-center justify-end">
+            <a href="{% url 'clinic_update' clinic.id %}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Edit Info</a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block footer %}
+{% include "admin_footer.html" %}
+{% endblock %}
