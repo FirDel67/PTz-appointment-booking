@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Confirmation</title>
+    <style>
+        /* General Styles */
+        body {
+            background-color: #f3f4f6;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 32rem;
+            margin: 2rem auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #10b981;
+            padding: 1rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+            text-align: center;
+        }
+        .header img {
+            height: 4rem;
+            width: auto;
+        }
+        .body {
+            padding: 1.5rem;
+        }
+        .body h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        .body p {
+            color: #374151;
+            margin-top: 0.5rem;
+        }
+        .highlight {
+            font-weight: 600;
+            color: #10b981;
+        }
+        .details {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f3f4f6;
+            border-radius: 0.375rem;
+        }
+        .details p {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .details span {
+            font-weight: normal;
+        }
+        .qr-code {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .qr-code img {
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        .qr-note {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        .contact-info {
+            margin-top: 1.5rem;
+        }
+        .contact-info p {
+            color: #374151;
+        }
+        .contact-info .clinic-name {
+            font-weight: 600;
+        }
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            border-top: 1px solid #d1d5db;
+            padding-top: 1rem;
+        }
+        .footer p {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Logo -->
+        <div class="header">
+            <img src="{{ logo_url }}" alt="Clinic Logo">
+        </div>
+
+        <!-- Email Body -->
+        <div class="body">
+            <h1>Appointment Confirmed</h1>
+            <p>Dear {{ patient }}, your appointment has been <span class="highlight">confirmed</span>:</p>
+
+            <!-- Appointment Details -->
+            <div class="details">
+                <p>Doctor: <span>{{ doctor_name }}</span></p>
+                <p>Clinic: <span>{{ clinic_name }}</span></p>
+                <p>Date: <span>{{ date }}</span></p>
+                <p>Time: <span>{{ time }}</span></p>
+                <p>Ticket ID: <span>{{ ticket_id }}</span></p>
+            </div>
+
+            <!-- QR Code -->
+            {% if qr_code_base64 %}
+            <div class="qr-code">
+                <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="Appointment QR Code">
+                <p class="qr-note">Show this code at the clinic reception.</p>
+            </div>
+            {% endif %}
+
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <p>If you have questions, please contact us at:</p>
+                <p class="clinic-name">{{ clinic_name }}</p>
+                <p>{{ address }}</p>
+                <p>Email: <a href="mailto:{{email}}">{{ email }}</a></p>
+                <p>Phone: <a href="tel:{{phone}}">{{ phone }}</a></p>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>This is an automated message. Please do not reply.</p>
+                <p>&copy; {{ clinic_name }}. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

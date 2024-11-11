@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Cancellation Notification</title>
+    <style>
+        /* General Reset */
+        body {
+            background-color: #f3f4f6;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Container */
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: #3b82f6;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header img {
+            height: 64px;
+            width: auto;
+        }
+
+        /* Body */
+        .body {
+            padding: 24px;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .text {
+            color: #4b5563;
+            margin-top: 8px;
+            font-size: 1rem;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #ef4444;
+        }
+
+        /* Appointment Details */
+        .details {
+            margin-top: 16px;
+            padding: 16px;
+            background-color: #f3f4f6;
+            border-radius: 6px;
+        }
+
+        .details p {
+            font-size: 1rem;
+            color: #1f2937;
+            margin: 4px 0;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .value {
+            font-weight: normal;
+        }
+
+        /* Clinic Information */
+        .clinic-info {
+            margin-top: 24px;
+            color: #4b5563;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            padding-top: 16px;
+            border-top: 1px solid #d1d5db;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        .footer p {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Logo -->
+        <div class="header">
+            <img src="{{ logo_url }}" alt="Clinic Logo">
+        </div>
+
+        <!-- Email Body -->
+        <div class="body">
+            <h1 class="title">Appointment Cancelled</h1>
+            <p class="text">
+                Hello Dr. {{ doctor_name }},
+            </p>
+            <p class="text">
+                We would like to inform you that the following appointment has been <span class="highlight">cancelled</span>:
+            </p>
+
+            <!-- Appointment Details -->
+            <div class="details">
+                <p><span class="label">Patient:</span> <span class="value">{{ patient_name }}</span></p>
+                <p><span class="label">Ticket ID:</span> <span class="value">{{ patient_ticket }}</span></p>
+                <p><span class="label">Date:</span> <span class="value">{{ date }}</span></p>
+                <p><span class="label">Time:</span> <span class="value">{{ time }}</span></p>
+            </div>
+
+            <!-- Clinic Information -->
+            <div class="clinic-info">
+                <p>If you have any questions, please contact the clinic at:</p>
+                <p><span class="label">{{ clinic_name }}</span></p>
+                <p>{{ address }}</p>
+                <p>Email: <a href="mailto:{{email}}">{{ email }}</a></p>
+                <p>Phone: <a href="tel:{{phone}}">{{ phone }}</a></p>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>This is an automated message. Please do not reply.</p>
+                <p>&copy; {{ clinic_name }}. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

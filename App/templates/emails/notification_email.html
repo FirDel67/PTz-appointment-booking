@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Appointment Notification</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+        
+        /* Header */    
+        .header {
+            background-color: #3b82f6;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header img {
+            height: 64px;
+            width: auto;
+        }
+        
+        h2 {
+            color: #333;
+            text-align: center;
+            border-bottom: 2px solid #007BFF;
+            padding-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.5;
+            color: #555;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 10px;
+        }
+
+        .highlight {
+            background-color: #e9f5ff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h2>New Appointment Booked</h2>
+
+        <div class="header flex flex-col items-center justify-self-center self-center">
+            <img src="{{ logo_url }}" alt="Clinic Logo" class="header-image">
+        </div>
+
+        <p>Dear Dr. {{ doctor_name }},</p>
+        <p>An appointment has been booked with you on {{ date }} at {{ time }} by {{ patient_name }}.</p>
+        <div class="highlight">
+            <p><strong>Appointment Details:</strong></p>
+            <ul>
+                <li>Patient Name: {{ patient_name }}</li>
+                <li>Date: {{ date }}</li>
+                <li>Time: {{ time }}</li>
+            </ul>
+            <p>Appointment ticket: {{patient_ticket}}</p>
+            <p>Appointment status: <strong style="color: green;">{{status}}</strong></p>
+        </div>
+        <p>Best regards,</p>
+        <p>{{ clinic_name }}</p>
+        <div class="footer">This email was sent from {{ clinic_name }}.</div>
+    </div>
+</body>
+
+</html>

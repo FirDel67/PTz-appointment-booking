@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About - TEREZIYA Polyclinic{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto p-4">
+    <!-- Hero Section -->
+    <section class="w-full h-96 bg-cover bg-center rounded shadow-lg" style="background-image: url('{% static "img/ptz_img.png" %}');">
+        <div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold">Welcome to Polyclinique Tereziya</h1>
+            <p class="mt-4 text-lg md:text-2xl font-semibold">Committed to providing exceptional medical care for your well-being</p>
+        </div>
+    </section>
+
+    <div class="bg-white shadow-lg rounded-lg p-4 my-2">
+        <section class="py-8 px-4 md:px-10 max-w-screen-xl mx-auto">
+            <h2 class="text-3xl font-semibold text-indigo-600 text-center">What We Do</h2>
+            <p class="mt-2 text-lg text-gray-700 text-center">
+                Located in the heart of Bujumbura, Burundi, Polyclinique Tereziya is a leading multispecialty hospital dedicated to providing exceptional medical care to our community.
+            </p>
+        </section>
+        <h3 class="text-2xl font-semibold text-indigo-600 text-center">Our Mission</h3>
+        <p class="mt-2 text-gray-600 text-center">
+            At Polyclinique Tereziya, our mission is to deliver comprehensive and compassionate healthcare services. We are dedicated to ensuring the well-being of every patient that walks through our doors.
+        </p>
+    </div>
+
+    <!-- Contact Us Section -->
+    <section class="bg-gray-100 shadow-lg rounded-lg p-3 mb-3 max-w-screen-md mx-auto">
+        <h2 class="text-3xl font-semibold text-indigo-600 text-center mb-6">Contact Us</h2>
+        <form id="contactForm"  method="POST" class="space-y-2">
+            {% csrf_token %}
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text" id="name" name="name" placeholder="NIYONKURU Jean" class="mt-1 block w-full p-3 border border-gray-300 rounded-md" />
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="email" name="email" placeholder="niyonkuru@gmail.com" class="mt-1 block w-full p-3 border border-gray-300 rounded-md" />
+            </div>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                <input type="tel" id="phone" name="phone" placeholder="+25761281897" class="mt-1 block w-full p-3 border border-gray-300 rounded-md" />
+            </div>
+            <div>
+                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                <textarea id="message" name="message" placeholder="Your message here" rows="4" class="mt-1 block w-full p-3 border border-gray-300 rounded-md"></textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-md shadow-lg">
+                    Send Message
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <div class="bg-white shadow-lg rounded-lg p-2 my-2">
+        <div class="flex items-center mb-1">
+            <div class="bg-indigo-500 text-white w-12 h-12 flex items-center justify-center rounded-full">
+                <i class="fa-regular fa-hospital text-2xl font-bold text-gray-800"></i>
+            </div>
+            <h2 class="ml-4 text-2xl font-bold text-gray-800">{{ clinic.name }}</h2>
+        </div>
+
+        <!-- Clinic Details -->
+        <div class="space-y-1">
+            <!-- Address -->
+            <div class="flex items-center">
+                <i class="fa-solid fa-location-dot text-gray-700 m-1 text-lg"></i>
+                <p class="text-gray-700 m-1 text-lg">{{ clinic.address }}</p>
+            </div>
+
+            <!-- Phone -->
+            <div class="flex items-center">
+                <i class="fa-solid fa-phone text-gray-700 m-1 text-lg"></i>
+                <p class="text-gray-700 m-1 text-lg m-1"><a href="tel:{{ clinic.phone }}" class="text-blue-600 hover:underline">{{ clinic.phone }}</a></p>
+            </div>
+
+            <!-- Email -->
+            <div class="flex items-center">
+                <i class="fa-solid fa-envelope text-gray-700 m-1 text-lg m-1"></i>
+                <p class="text-gray-700 m-1 text-lg"><a href="tel:{{ clinic.email }}" class="text-blue-600 hover:underline">{{ clinic.email }}</a></p>
+            </div>
+
+            <!-- Opening Hours -->
+            {% if clinic.opening_hours %}
+            <div class="flex items-center">
+                <i class="fa-solid fa-calendar-week text-gray-700 text-lg m-1"></i>
+                <p class="text-gray-700 text-lg m-1">{{ clinic.opening_hours }}</p>
+            </div>
+            {% endif %}
+
+            <!-- Description -->
+            {% if clinic.description %}
+            <div>
+                <h3 class="text-lg font-semibold text-indigo-600">Description</h3>
+                <p class="text-gray-600 mt-2">{{ clinic.description }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+            <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Validate the form fields
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            // Simple validation
+            if (!name || !email || !message) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Incomplete Fields',
+                    text: 'Please fill in all required fields!',
+                });
+                return;
+            }
+
+            // Show SweetAlert confirmation dialog
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to send this message?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#4f46e5',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, send it!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Proceed with form submission
+                    const formData = new FormData();
+                    formData.append('name', name);
+                    formData.append('email', email);
+                    formData.append('phone', phone);
+                    formData.append('message', message);
+
+                    
+                    // Show loading spinner
+                    $('#loadingSpinner').removeClass('hidden');
+                    
+
+                    // Send the form data using fetch (AJAX)
+                    fetch('/contact/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        body: formData,
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            
+                            // Hide loading spinner
+                            $('#loadingSpinner').addClass('hidden');
+                            if (data.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Message Sent!',
+                                    text: 'Thank you for contacting us. We will get back to you soon!',
+                                }).then(() => {
+                                    // Reset the form after successful submission
+                                    document.getElementById('contactForm').reset();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Failed to send the message. Please try again later.',
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            
+                            // Hide loading spinner
+                            $('#loadingSpinner').addClass('hidden');
+                            console.error('Error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An unexpected error occurred. Please try again later.',
+                            });
+                        });
+                }
+            });
+        });
+
+    </script>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% include "footer.html" %}
+{% endblock %}

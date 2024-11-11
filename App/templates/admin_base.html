@@ -1,0 +1,106 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'img/logo.jpeg' %}">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static "css/tailwind.min.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/all.min.css" %}" />
+    <link rel="stylesheet" href="{% static "css/main.css" %}" />
+    <script src="{% static "js/jquery-3.6.0.min.js" %}"></script>
+    <script src="{% static "js/axios.min.js" %}"></script>
+    <script src="{% static "js/sweetalert2@11.js" %}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="font-sans leading-normal tracking-normal">
+
+    <!-- Navbar -->
+    <nav class="bg-gray-800 shadow-lg flex items-center justify-center">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <a href="{% url 'admin_dashboard' %}" class="text-white font-bold flex items-center flex-wrap">
+                    <img src="{% static 'img/logo.png' %}" alt="Clinic Logo" class="h-8 w-auto mr-2">
+                    <span class="sm:text-sm">TEREZIYA Polyclinic</span>
+                </a>
+
+                <!-- Menu button for small screens -->
+                <div class="block lg:hidden w-auto mr-2">
+                    <button id="menu-toggle" className="bg-orange-500 rounded">
+                        <svg class="w-10 h-10 text-white dark:text-white" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M18 6H6m12 4H6m12 4H6m12 4H6" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Navbar links -->
+                <div id="nav-links" class="hidden lg:flex lg:items-center lg:space-x-6">
+                    <a href="{% url 'admin_dashboard' %}" class="text-white hover:bg-blue-400 rounded p-1">Dashboard</a>
+                    <a href="{% url 'clinic_list' %}" class="text-white hover:bg-blue-400 rounded p-1">Clinic</a>
+                    <a href="{% url 'doctor_list' 1 %}" class="text-white hover:bg-blue-400 rounded p-1">Doctors</a>
+                    <a href="{% url 'clinic_appointments' 1 %}"
+                        class="text-white hover:bg-blue-400 rounded p-1">Appointments</a>
+                    <a href="{% url 'contact_list' %}" class="text-white hover:bg-blue-400 rounded p-1">Messages</a>
+                    <a href="{% url 'admin_account_details_view' %}" class="text-white hover:bg-blue-400 rounded p-1">Account</a>
+                </div>
+            </div>
+
+            <!-- Dropdown menu for mobile screens -->
+            <div id="mobile-menu"
+                class="hidden lg:hidden bg-gray-600 rounded shadow-xl flex flex-col items-center justify-center absolute top-16 right-0">
+                <a href="{% url 'admin_dashboard' %}" class="block text-white py-2 px-4 hover:bg-blue-800">Dashboard</a>
+                <a href="{% url 'clinic_list' %}" class="block text-white py-2 px-4 hover:bg-blue-800">Clinic</a>
+                <a href="{% url 'doctor_list' 1 %}" class="block text-white py-2 px-4 hover:bg-blue-800">Doctors</a>
+                <a href="{% url 'clinic_appointments' 1 %}"
+                    class="block text-white py-2 px-4 hover:bg-blue-800">Appointments</a>
+                <a href="{% url 'contact_list' %}" class="block text-white py-2 px-4 hover:bg-blue-800">Messages</a>
+                <a href="{% url 'admin_account_details_view' %}" class="block text-white py-2 px-4 hover:bg-blue-800">Account</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container mx-auto py-8">
+        {% block content %}
+        <!-- Page-specific content goes here -->
+        {% endblock %}
+    </div>
+
+    <!-- Main content -->
+    <div class="py-8">
+        {% block footer %}
+        <!-- Footer content goes here -->
+        {% endblock %}
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            //navLinks.classList.toggle('hidden');
+            mobileMenu.classList.toggle('hidden');
+        });
+        // Close the menu when clicking outside of it
+        document.addEventListener('click', (event) => {
+            const isClickInsideMenu = mobileMenu.contains(event.target);
+            const isClickOnToggle = menuToggle.contains(event.target);
+
+            if (!isClickInsideMenu && !isClickOnToggle) {
+                mobileMenu.classList.add('hidden'); // Hide the menu
+            }
+        });
+    </script>
+
+</body>
+
+</html>

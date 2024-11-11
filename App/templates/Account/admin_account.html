@@ -1,0 +1,169 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block title %}Account Details - TEREZIYA Polyclinic {% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto p-4">
+    <!-- Profile Header -->
+    <div class="flex items-center justify-between flex-wrap mb-8">
+        <div class="flex items-center space-x-4">
+            <div class="w-24 h-24 border rounded-full overflow-hidden">
+                <img src="{% static 'img/logo.jpeg' %}" alt="Profile Image" class="w-full h-full object-cover">
+            </div>
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">{{ user.username }}</h1>
+                <p class="text-gray-600">{{ user.email }}</p>
+            </div>
+        </div>
+        <div class="flex justify-end items-cente space-x-1">
+            <button id="editAccountBtn" class="bg-blue-600 text-white m-1 px-4 py-2 rounded-lg hover:bg-blue-700">Edit Account</button>
+            <button id="logoutBtn" class="bg-red-600 text-white m-1 px-4 py-2 rounded-lg hover:bg-blue-700">Logout</button>
+        </div>
+    </div>
+
+    <!-- Account Details Section -->
+    <div class="space-y-4 rounded shadow p-2">
+        <div>
+            <h2 class="text-lg font-bold text-gray-700">Personal Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                <p><span class="font-semibold">First Name:</span> {{ user.first_name }}</p>
+                <p><span class="font-semibold">Last Name:</span> {{ user.last_name }}</p>
+                <p><span class="font-semibold">Phone Number:</span> {{ user.phone_number }}</p>
+                <p><span class="font-semibold">Address:</span> {{ user.address }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Account Modal -->
+    <div id="editAccountModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white w-full max-w-lg h-full overflow-y-scroll p-6 rounded-lg shadow-lg">
+            <h3 class="text-xl font-semibold mb-4">Edit Admin Account</h3>
+            <form id="editAccountForm">
+                {% csrf_token %}
+                <div class="mb-2">
+                    <label for="first_name" class="block font-bold">First Name</label>
+                    <input type="text" id="edit_first_name" name="first_name" class="w-full px-4 py-2 border rounded-lg" value="{{ user.first_name }}" required>
+                </div>
+                <div class="mb-2">
+                    <label for="last_name" class="block font-bold">Last Name</label>
+                    <input type="text" id="edit_last_name" name="last_name" class="w-full px-4 py-2 border rounded-lg" value="{{ user.last_name }}" required>
+                </div>
+                <div class="mb-2">
+                    <label for="email" class="block font-bold">Email</label>
+                    <input type="email" id="edit_email" name="email" class="w-full px-4 py-2 border rounded-lg" value="{{ user.email }}" required>
+                </div>
+                <div class="mb-2">
+                    <label for="phone_number" class="block font-bold">Phone Number</label>
+                    <input type="text" id="edit_phone_number" name="phone_number" class="w-full px-4 py-2 border rounded-lg" value="{{ user.phone_number }}" required>
+                </div>
+                <div class="mb-2">
+                    <label for="address" class="block font-bold">Address</label>
+                    <input type="text" id="edit_address" name="address" class="w-full px-4 py-2 border rounded-lg" value="{{ user.address }}" required>
+                </div>
+                <div class="mb-2">
+                    <label for="username" class="block font-bold">Username</label>
+                    <input type="text" id="edit_username" name="username" class="w-full px-4 py-2 border rounded-lg" value="{{ user.username }}" required>
+                </div>
+                
+                <div class="flex justify-end mt-4">
+                    <button type="button" id="closeModalBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2">Cancel</button>
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+    </div>
+
+    <script>
+        // Toggle Modal Visibility
+        $('#editAccountBtn').on('click', function() {
+            $('#editAccountModal').removeClass('hidden');
+        });
+
+        $('#closeModalBtn').on('click', function() {
+            $('#editAccountModal').addClass('hidden');
+        });
+
+        // Handle Form Submission
+        $('#editAccountForm').submit(function(e) {
+            e.preventDefault();
+            var formData = $(this).serialize();
+
+            // Show loading spinner
+            $('#loadingSpinner').removeClass('hidden');
+            
+            $.ajax({
+                url: "{% url 'update_admin_view' %}",
+                type: "POST",
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                data: formData,
+                success: function(response) {
+                    $('#loadingSpinner').addClass('hidden');
+                    if (response.status == 'success') {
+                        Swal.fire('Success', response.message, 'success').then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Error', response.message, 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('Error', 'An error occurred. Please try again.', 'error');
+                    $('#loadingSpinner').addClass('hidden');
+                }
+            });
+        });
+        $(document).ready(function() {
+            $('#logoutBtn').click(function() {
+                // Show confirmation dialog
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Do you really want to logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, logout!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Send AJAX request to logout the user
+                        $.ajax({
+                            url: "{% url 'logout' %}",
+                            type: "GET",
+                            success: function(response) {
+                                if (response.status === 'success') {
+                                    Swal.fire(
+                                        'Logged Out!',
+                                        response.message,
+                                        'success'
+                                    ).then(() => {
+                                        // Redirect to the login page or any other page
+                                        window.location.href = "{% url 'admin_dashboard' %}";
+                                    });
+                                } else {
+                                    Swal.fire('Error', response.message, 'error');
+                                }
+                            },
+                            error: function() {
+                                Swal.fire('Error', 'An error occurred. Please try again.', 'error');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% include "admin_footer.html" %}
+{% endblock %}
