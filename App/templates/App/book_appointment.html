@@ -126,7 +126,7 @@
             // Show loading spinner
             $('#loadingSpinner').removeClass('hidden');
             
-            fetch("http://127.0.0.1:8000/book_appointment/", {
+            fetch("/book_appointment/", {
                 method: 'POST',
                 body: formData,
                 headers: {
