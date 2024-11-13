@@ -135,7 +135,7 @@ class Appointment(models.Model):
 
     def send_ticket_email(self, request):
         subject = f'Your Appointment Ticket - {self.clinic.name}'
-        logo_url = request.build_absolute_uri('/static/img/logo.jpeg')
+        logo_url = request.build_absolute_uri(settings.STATIC_URL + 'img/logo.jpeg')
         
         # Get recipient email
         recipient_mail = self.patient_email if self.patient_email else self.patient.email
@@ -147,6 +147,9 @@ class Appointment(models.Model):
                 qr_image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
         else:
             qr_image_base64 = None  # Fallback if QR code is missing
+            
+        if self.qr_code:
+            qr_code_url = request.build_absolute_uri(self.qr_code.url)
 
          # Choose template and subject based on status
         if self.status == "pending":
@@ -179,7 +182,7 @@ class Appointment(models.Model):
             'ticket_id': self.ticket_id,
             'logo_url': logo_url,
             'status': self.status,
-            'qr_code_base64': qr_image_base64,  # Add QR code as base64 string
+            'qr_code_base64': qr_code_url,
         })
         
         # Fallback for email clients that don’t support HTML
@@ -201,7 +204,7 @@ class Appointment(models.Model):
     def send_notification_to_doctor(self, request):
         
         subject = f'New Appointment Booked - {self.clinic.name}'
-        logo_url = request.build_absolute_uri('/static/img/logo.jpeg')
+        logo_url = request.build_absolute_uri(settings.STATIC_URL + 'img/logo.jpeg')
 
         html_message = render_to_string('emails/notification_email.html', {
             'doctor_name': self.doctor.first_name,
@@ -250,7 +253,7 @@ class Appointment(models.Model):
         print("Self status: ", self.status, " -- Issued status: ", self.issued_at)
         if self.status == 'confirmed' or self.issued_at is not None:
             subject = f'Appointment Cancelled - {self.clinic.name}'
-            logo_url = request.build_absolute_uri('/static/img/logo.jpeg')
+            logo_url = request.build_absolute_uri(settings.STATIC_URL + 'img/logo.jpeg')
             
             # Render HTML email for doctor notification
             html_message = render_to_string('emails/cancellation_notification_email.html', {
