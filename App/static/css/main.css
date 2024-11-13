@@ -12,6 +12,7 @@
     to {
         transform: rotate(360deg);
     }
+<<<<<<< HEAD
 }
 
 /* NavBars de google translate */
@@ -41,4 +42,6 @@
         width: 5em;
         overflow: hidden !important;
     }
+=======
+>>>>>>> 183cd9f74c1f0208e0db6d8d08734a8984f0793d
 }

@@ -312,4 +312,8 @@ class Contact(models.Model):
         2. Availability: Store the available times for each doctor.
         3. Appointment: Store appointment details, including a ticket ID for the appointment.
         4. Patient: Store patient/user details (if not using Django’s User model directly).
+<<<<<<< HEAD
 """ 
+=======
+""" 
+>>>>>>> 183cd9f74c1f0208e0db6d8d08734a8984f0793d

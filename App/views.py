@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from django.shortcuts import render, get_object_or_404
+=======
+from django.shortcuts import render, redirect, get_object_or_404
+>>>>>>> 183cd9f74c1f0208e0db6d8d08734a8984f0793d
 from .models import Clinic, Doctor, Appointment, CustomUser, Availability, Contact
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -11,6 +15,10 @@ from .forms import UpdatePatientForm
 from datetime import datetime
 import json
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 183cd9f74c1f0208e0db6d8d08734a8984f0793d
 def HomePage(request):
     return render(request, 'App/home.html')
 
@@ -45,6 +53,7 @@ def Book_Appointment(request):
         if not availability_exists:
             return JsonResponse({'status': 'error', 'message': 'The selected doctor is not available at this time.'})
 
+<<<<<<< HEAD
         try:
         # Create and save the appointment
             if email is not None or phone is not None:
@@ -73,6 +82,33 @@ def Book_Appointment(request):
             return JsonResponse({'status': 'success', 'message': 'Your appointment has been booked successfully!'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': f"An error occured: {str(e)}"})
+=======
+        # Create and save the appointment
+        if email is not None or phone is not None or request.user:
+            appointment = Appointment(
+                clinic_id=clinic_id,
+                doctor=doctor,
+                patient=request.user if request.user else None,
+                patient_email = email,
+                patient_phone= phone,
+                date=date,
+                time=time
+            )
+            appointment.save()
+            appointment.send_ticket_email(request)
+        else:
+            appointment = Appointment(
+                clinic_id=clinic_id,
+                doctor=doctor,
+                patient=request.user,
+                date=date,
+                time=time
+            )
+            appointment.save()
+            appointment.send_ticket_email(request)
+
+        return JsonResponse({'status': 'success', 'message': 'Your appointment has been successfully booked!'})
+>>>>>>> 183cd9f74c1f0208e0db6d8d08734a8984f0793d
 
     # For GET request, provide all available doctors and their availabilities
     return render(request, 'App/book_appointment.html', {
