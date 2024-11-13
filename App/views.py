@@ -75,32 +75,7 @@ def Book_Appointment(request):
             return JsonResponse({'status': 'success', 'message': 'Your appointment has been booked successfully!'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': f"An error occured: {str(e)}"})
-        # Create and save the appointment
-        if email is not None or phone is not None or request.user:
-            appointment = Appointment(
-                clinic_id=clinic_id,
-                doctor=doctor,
-                patient=request.user if request.user else None,
-                patient_email = email,
-                patient_phone= phone,
-                date=date,
-                time=time
-            )
-            appointment.save()
-            appointment.send_ticket_email(request)
-        else:
-            appointment = Appointment(
-                clinic_id=clinic_id,
-                doctor=doctor,
-                patient=request.user,
-                date=date,
-                time=time
-            )
-            appointment.save()
-            appointment.send_ticket_email(request)
-
-        return JsonResponse({'status': 'success', 'message': 'Your appointment has been successfully booked!'})
-
+        
     # For GET request, provide all available doctors and their availabilities
     return render(request, 'App/book_appointment.html', {
         'clinic': clinic,
