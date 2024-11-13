@@ -1,3 +1,4 @@
+import dj_database_url
 from pathlib import Path
 import os
 
@@ -12,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-bu6j!n#)_$$=tfgu7+op&2%_7h8s1#$4q4k0a7=53uq9@p+a!a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["ptz-appointment-booking.onrender.com"]
 
 
 # Application definition
@@ -71,6 +72,9 @@ DATABASES = {
     }
 }
 
+DATABASES['default'] = dj_database_url.parse("postgresql://ptz_appointment_booking_user:JZVLRlG3kTGOU5TSII7eXU9BsebKMYPp@dpg-cspl90m8ii6s73bp1pc0-a.oregon-postgres.render.com/ptz_appointment_booking")
+
+# postgresql://ptz_appointment_booking_user:JZVLRlG3kTGOU5TSII7eXU9BsebKMYPp@dpg-cspl90m8ii6s73bp1pc0-a.oregon-postgres.render.com/ptz_appointment_booking
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -109,17 +113,24 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Media files (User-uploaded content)
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Additional static files directory
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 AUTH_USER_MODEL = 'App.CustomUser'
+
+# For rendering static files efficiently
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
