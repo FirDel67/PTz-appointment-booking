@@ -115,7 +115,7 @@
             <!-- QR Code -->
             {% if qr_code_base64 %}
             <div class="qr-code">
-                <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="Appointment QR Code">
+                <img src="{{ qr_code_base64 }}" alt="Appointment QR Code">
                 <p class="qr-note">Show this code at the clinic reception.</p>
             </div>
             {% endif %}

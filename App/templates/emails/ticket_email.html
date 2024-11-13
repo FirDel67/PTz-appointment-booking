@@ -108,7 +108,7 @@
 
         {% if qr_code_base64 %}
             <p>Scan this code on arrival:</p>
-            <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="Appointment QR Code" class="mx-auto my-4 w-32 h-32"/>
+            <img src="{{ qr_code_base64 }}" alt="Appointment QR Code" class="mx-auto my-4 w-32 h-32"/>
         {% else %}
             <p>Your Ticket ID: <span class="ticket-id">{{ ticket_id }}</span>. Use this ID if the QR code is not available.</p>
         {% endif %}

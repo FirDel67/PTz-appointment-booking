@@ -8,15 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="{% static 'img/logo.jpeg' %}">
     <title>{% block title %}{% endblock %}</title>
-    <link href="{% static "css/tailwind.min.css" %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static "css/all.min.css" %}" />
-    <link rel="stylesheet" href="{% static "css/main.css" %}" />
-    <script src="{% static "js/jquery-3.6.0.min.js" %}"></script>
-    <script src="{% static "js/axios.min.js" %}"></script>
-    <script src="{% static "js/sweetalert2@11.js" %}"></script>
+    <link href="{% static 'css/tailwind.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'js/axios.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert2@11.js' %}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslate"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script>
+        ScrollReveal({ reset: true });
+    </script>
 </head>
 
 <body class="font-sans leading-normal tracking-normal">
@@ -32,7 +37,7 @@
 
                 <!-- Menu button for small screens -->
                 <div class="block lg:hidden w-auto mr-2">
-                    <button id="menu-toggle" className="bg-orange-500 rounded">
+                    <button id="menu-toggle" class="bg-orange-500 rounded">
                         <svg class="w-10 h-10 text-white dark:text-white" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -63,6 +68,10 @@
         </div>
     </nav>
 
+    <div class="flex justify-center items-center">
+        <div id="btr"></div>
+    </div>
+
     <!-- Main content -->
     <div class="container mx-auto py-8">
         {% block content %}
@@ -78,14 +87,36 @@
     </div>
 
     <script>
+        // Function to initialize the Google Translate widget
+        function googleTranslateElementInit() {
+            new window.google.translate.TranslateElement(
+                { pageLanguage: 'en',
+             },
+                'btr'
+            );
+        }
+
+        // Wait for the script to load and initialize Google Translate
+        if (window.google && window.google.translate && window.google.translate.TranslateElement) {
+            googleTranslateElementInit();
+        } else {
+            // Fallback: wait for Google Translate script to load
+            var intervalId = setInterval(function() {
+                if (window.google && window.google.translate && window.google.translate.TranslateElement) {
+                    clearInterval(intervalId);
+                    googleTranslateElementInit();
+                }
+            }, 100);
+        }
+
+        // Navbar toggle for small screens
         const menuToggle = document.getElementById('menu-toggle');
-        const navLinks = document.getElementById('nav-links');
         const mobileMenu = document.getElementById('mobile-menu');
 
         menuToggle.addEventListener('click', () => {
-            //navLinks.classList.toggle('hidden');
             mobileMenu.classList.toggle('hidden');
         });
+
         // Close the menu when clicking outside of it
         document.addEventListener('click', (event) => {
             const isClickInsideMenu = mobileMenu.contains(event.target);
@@ -96,7 +127,6 @@
             }
         });
     </script>
-
 </body>
 
 </html>
