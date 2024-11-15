@@ -155,6 +155,24 @@
         
         document.getElementById('language-selector').value = getSavedLanguage();
 
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            //navLinks.classList.toggle('hidden');
+            mobileMenu.classList.toggle('hidden');
+        });
+        // Close the menu when clicking outside of it
+        document.addEventListener('click', (event) => {
+            const isClickInsideMenu = mobileMenu.contains(event.target);
+            const isClickOnToggle = menuToggle.contains(event.target);
+
+            if (!isClickInsideMenu && !isClickOnToggle) {
+                mobileMenu.classList.add('hidden'); // Hide the menu
+            }
+        });
+
     </script>
 
 </body>
