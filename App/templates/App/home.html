@@ -9,11 +9,11 @@
     <section class="flex flex-col items-center justify-center shadow rounded border text-gray-600 py-16 px-4">
         <div class="max-w-3xl text-center">
             <div class="bg-green-600 rounded shadow-lg p-2 text-center mb-4">
-                <h1 class="text-2xl md:text-4xl text-white font-bold">Welcome to TEREZIYA Polyclinic</h1>
+                <h1 class="text-2xl md:text-4xl text-white font-bold" data-translate="welcome_message">Welcome to TEREZIYA Polyclinic</h1>
             </div>
-            <p class="text-lg md:text-xl mb-8">Book appointments with expert doctors, get personalized healthcare, and
+            <p class="text-lg md:text-xl mb-8" data-translate="book_appointment">Book appointments with expert doctors, get personalized healthcare, and
                 stay informed.</p>
-            <a href="{% url 'user_appointments' %}"
+            <a href="{% url 'user_appointments' %}" data-translate="book_appointment_btn"
                 class="bg-white text-blue-600 font-semibold px-6 py-3 rounded-md shadow-md hover:bg-gray-200 transition">Book
                 Appointment</a>
         </div>
@@ -22,24 +22,24 @@
     <!-- Features Section -->
     <section class="py-12 px-4">
         <div class="max-w-5xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">Our Services</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8" data-translate="our_services">Our Services</h2>
             <div class="grid gap-8 md:grid-cols-3">
                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
                     <img src="{% static 'img/consultation.jpg' %}" alt="Consultation" class="h-16 w-16 mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Consultations</h3>
-                    <p>Our specialists are available to help you with various health needs.</p>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="consultations">Consultations</h3>
+                    <p data-translate="consultations_desc">Our specialists are available to help you with various health needs.</p>
                 </div>
 
                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
                     <img src="{% static 'img/checkup.jpg' %}" alt="Checkup" class="h-16 w-16 mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Regular Checkups</h3>
-                    <p>Ensure your well-being with our routine checkup services.</p>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="checkups">Regular Checkups</h3>
+                    <p data-translate="checkups_desc">Ensure your well-being with our routine checkup services.</p>
                 </div>
 
                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
                     <img src="{% static 'img/emergency.jpg' %}" alt="Emergency" class="h-16 w-16 mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Emergency Services</h3>
-                    <p>24/7 emergency support available for immediate assistance.</p>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="emergency_services">Emergency Services</h3>
+                    <p data-translate="emergency_desc">24/7 emergency support available for immediate assistance.</p>
                 </div>
             </div>
         </div>
@@ -48,10 +48,10 @@
     <!-- Contact Section -->
     <section class="border shadow rounded text-gray-600 py-12 px-4">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl font-bold mb-6">Get In Touch</h2>
-            <p class="mb-8">If you have questions or need assistance, feel free to contact us. Our team is here to help
+            <h2 class="text-3xl font-bold mb-6"  data-translate="get_in_touch">Get In Touch</h2>
+            <p class="mb-8" data-translate="contact_desc">If you have questions or need assistance, feel free to contact us. Our team is here to help
                 you with all your healthcare needs.</p>
-            <a href="{% url 'about_us' %}"
+            <a href="{% url 'about_us' %}" data-translate="contact_us"
                 class="bg-white text-blue-600 font-semibold px-6 py-3 rounded-md shadow-md hover:bg-gray-200 transition">Contact
                 Us</a>
         </div>

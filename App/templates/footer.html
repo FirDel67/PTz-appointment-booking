@@ -5,23 +5,23 @@
         <!-- About Section -->
         <a href="{% url 'HomePage' %}" class="text-white font-bold flex flex-col items-center self-center justify-center flex-wrap">
             <img src="{% static 'img/logo.png' %}" alt="Clinic Logo" class="h-8 w-auto mr-2">
-            <span class="sm:text-sm">TEREZIYA Polyclinic</span>
+            <span class="sm:text-sm" data-translate="TEREZIYA Polyclinic">TEREZIYA Polyclinic</span>
         </a>
 
         <!-- Links Section -->
         <div class="flex text-center flex-col">
-            <h3 class="text-lg font-semibold text-white mb-1">Quick Links</h3>
+            <h3 class="text-lg font-semibold text-white mb-1" data-translate="Quick Links">Quick Links</h3>
             <ul class="flex flex-wrap justify-around items-center">
-                <li><a href="{% url 'HomePage' %}" class="m-2 hover:text-white transition">Home</a></li>
-                <li><a href="{% url 'user_appointments' %}" class="m-2 hover:text-white transition">Appointments</a></li>
-                <li><a href="{% url 'about_us' %}" class="m-2 hover:text-white transition">About</a></li>
-                <li><a href="{% url 'account_details_view' %}" class="m-2 hover:text-white transition">Account</a></li>
+                <li><a href="{% url 'HomePage' %}" class="m-2 hover:text-white transition" data-translate="Home">Home</a></li>
+                <li><a href="{% url 'user_appointments' %}" class="m-2 hover:text-white transition" data-translate="Appointments">Appointments</a></li>
+                <li><a href="{% url 'about_us' %}" class="m-2 hover:text-white transition" data-translate="About">About</a></li>
+                <li><a href="{% url 'account_details_view' %}" class="m-2 hover:text-white transition" data-translate="Account">Account</a></li>
             </ul>
         </div>
 
         <!-- Social Media Section -->
         <div class="text-center md:text-right">
-            <h3 class="text-lg font-semibold text-white mb-1">Follow Us</h3>
+            <h3 class="text-lg font-semibold text-white mb-1" data-translate="Follow Us">Follow Us</h3>
             <div class="flex justify-center md:justify-end space-x-4">
                 <a href="https://www.facebook.com/Polyclinique.Tereziya" targert="_blank" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook"></i></a>
                 <a href="#" targert="_blank" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    <div class="mt-4 text-center text-gray-500">
+    <div class="mt-4 text-center text-gray-500" data-translate="TEREZIYA Polyclinic. All rights reserved">
         &copy; {{ now|date:"Y" }} TEREZIYA Polyclinic. All rights reserved.
     </div>
 </footer>

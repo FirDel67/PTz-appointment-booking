@@ -22,7 +22,6 @@
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslate"></script>
 </head>
 
 <body class="font-sans leading-normal tracking-normal">
@@ -33,7 +32,7 @@
             <div class="flex items-center justify-between py-4 w-fit">
                 <a href="{% url 'HomePage' %}" class="text-white font-bold flex items-center flex-wrap">
                     <img src="{% static 'img/logo.png' %}" alt="Clinic Logo" class="h-8 w-auto mr-2">
-                    <span class="sm:text-sm">TEREZIYA Polyclinic</span>
+                    <span class="sm:text-sm" data-translate="TEREZIYA Polyclinic">TEREZIYA Polyclinic</span>
                 </a>
 
                 <!-- Menu button for small screens -->
@@ -49,28 +48,37 @@
 
                 <!-- Navbar links -->
                 <div id="nav-links" class="hidden lg:flex lg:items-center lg:space-x-6">
-                    <a href="{% url 'HomePage' %}" class="text-white hover:bg-blue-400 rounded p-1">Home</a>
+                    <a href="{% url 'HomePage' %}" class="text-white hover:bg-blue-400 rounded p-1" data-translate="Home">Home</a>
                     <a href="{% url 'user_appointments' %}"
-                        class="text-white hover:bg-blue-400 rounded p-1">Appointments</a>
-                    <a href="{% url 'about_us' %}" class="text-white hover:bg-blue-400 rounded p-1">About</a>
-                    <a href="{% url 'account_details_view' %}" class="text-white hover:bg-blue-400 rounded p-1">Account</a>
+                        class="text-white hover:bg-blue-400 rounded p-1" data-translate="Appointments">Appointments</a>
+                    <a href="{% url 'about_us' %}" class="text-white hover:bg-blue-400 rounded p-1" data-translate="About">About</a>
+                    <a href="{% url 'account_details_view' %}" class="text-white hover:bg-blue-400 rounded p-1" data-translate="Account">Account</a>
                 </div>
             </div>
 
             <!-- Dropdown menu for mobile screens -->
             <div id="mobile-menu"
                 class="hidden lg:hidden bg-gray-600 rounded shadow-xl flex flex-col items-center justify-center absolute top-16 right-0">
-                <a href="{% url 'HomePage' %}" class="block text-white py-2 px-4 hover:bg-blue-800">Home</a>
+                <a href="{% url 'HomePage' %}" class="block text-white py-2 px-4 hover:bg-blue-800" data-translate="Home">Home</a>
                 <a href="{% url 'user_appointments' %}"
-                    class="block text-white py-2 px-4 hover:bg-blue-800">Appointments</a>
-                <a href="{% url 'about_us' %}" class="block text-white py-2 px-4 hover:bg-blue-800">About</a>
-                <a href="{% url 'account_details_view' %}" class="block text-white py-2 px-4 hover:bg-blue-800">Account</a>
+                    class="block text-white py-2 px-4 hover:bg-blue-800" data-translate="Appointments">Appointments</a>
+                <a href="{% url 'about_us' %}" class="block text-white py-2 px-4 hover:bg-blue-800" data-translate="About">About</a>
+                <a href="{% url 'account_details_view' %}" class="block text-white py-2 px-4 hover:bg-blue-800" data-translate="Account">Account</a>
             </div>
         </div>
     </nav>
 
-    <div class="flex justify-center items-center">
-        <div id="btr"></div>
+    <div class="flex justify-end items-center mt-2">
+        <!-- Language Selector -->
+        <div class="font-bold text-lg mx-2" data-translate="select_language">Select Language</div>
+        <div class="m-4">
+            <select id="language-selector" class="bg-gray-800 text-white rounded p-1">
+                <option value="en" selected>English</option>
+                <option value="fr">Français</option>
+                <option value="rundi">Kirundi</option>
+                <option value="sw">Kiswahili</option>
+            </select>
+        </div>
     </div>
 
     <!-- Main content -->
@@ -86,48 +94,69 @@
         <!-- Footer content goes here -->
         {% endblock %}
     </div>
-
+    
     <script>
-        // Function to initialize the Google Translate widget
-        function googleTranslateElementInit() {
-            new window.google.translate.TranslateElement(
-                { pageLanguage: 'en',
-             },
-                'btr'
-            );
-        }
 
-        // Wait for the script to load and initialize Google Translate
-        if (window.google && window.google.translate && window.google.translate.TranslateElement) {
-            googleTranslateElementInit();
-        } else {
-            // Fallback: wait for Google Translate script to load
-            var intervalId = setInterval(function() {
-                if (window.google && window.google.translate && window.google.translate.TranslateElement) {
-                    clearInterval(intervalId);
-                    googleTranslateElementInit();
-                }
-            }, 100);
-        }
+        function loadTranslation(language) {
+            const translations = {
+                'fr': '../../static/translations/fr.json',
+                'sw': '../../static/translations/sw.json',
+                'rundi': '../../static/translations/rundi.json',
+                'en': '../../static/translations/en.json'
+            };
 
-        // Navbar toggle for small screens
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Close the menu when clicking outside of it
-        document.addEventListener('click', (event) => {
-            const isClickInsideMenu = mobileMenu.contains(event.target);
-            const isClickOnToggle = menuToggle.contains(event.target);
-
-            if (!isClickInsideMenu && !isClickOnToggle) {
-                mobileMenu.classList.add('hidden'); // Hide the menu
+            const url = translations[language];
+            if (url) {
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => applyTranslations(data))
+                    .catch(error => console.error("Error loading translation file:", error));
+            } else {
+                resetToEnglish();
             }
+        }
+
+        // Function to apply translations to the page
+        function applyTranslations(data) {
+            for (const key in data) {
+                const elements = document.querySelectorAll(`[data-translate="${key}"]`);
+                elements.forEach(element => {
+                    element.textContent = data[key];
+                });
+            }
+        }
+
+        // Reset to English default
+        function resetToEnglish() {
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                element.textContent = element.getAttribute('data-translate');
+            });
+        }
+
+        // Store the selected language in localStorage
+        function saveLanguagePreference(language) {
+            localStorage.setItem('preferredLanguage', language);
+        }
+
+        // Load the saved language from localStorage or default to English
+        function getSavedLanguage() {
+            return localStorage.getItem('preferredLanguage') || 'en';
+        }
+
+        // Event listener for language change
+        document.getElementById('language-selector').addEventListener('change', (event) => {
+            const selectedLanguage = event.target.value;
+            saveLanguagePreference(selectedLanguage);
+            loadTranslation(selectedLanguage);
         });
+
+        // Initially load translations for the saved or default language
+        loadTranslation(getSavedLanguage());
+        
+        document.getElementById('language-selector').value = getSavedLanguage();
+
     </script>
+
 </body>
 
 </html>

@@ -8,47 +8,47 @@
     <!-- Hero Section -->
     <section class="w-full h-96 bg-cover bg-center rounded shadow-lg" style="background-image: url('{% static "img/ptz_img.png" %}');">
         <div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center">
-            <h1 class="text-4xl md:text-6xl font-extrabold">Welcome to Polyclinique Tereziya</h1>
-            <p class="mt-4 text-lg md:text-2xl font-semibold">Committed to providing exceptional medical care for your well-being</p>
+            <h1 class="text-4xl md:text-6xl font-extrabold" data-translate="welcome_message">Welcome to Polyclinique Tereziya</h1>
+            <p class="mt-4 text-lg md:text-2xl font-semibold" data-translate="hero_subtitle">Committed to providing exceptional medical care for your well-being</p>
         </div>
     </section>
 
     <div class="bg-white shadow-lg rounded-lg p-4 my-2">
         <section class="py-8 px-4 md:px-10 max-w-screen-xl mx-auto">
-            <h2 class="text-3xl font-semibold text-indigo-600 text-center">What We Do</h2>
-            <p class="mt-2 text-lg text-gray-700 text-center">
+            <h2 class="text-3xl font-semibold text-indigo-600 text-center" data-translate="section_title_what_we_do">What We Do</h2>
+            <p class="mt-2 text-lg text-gray-700 text-center" data-translate="section_description_what_we_do">
                 Located in the heart of Bujumbura, Burundi, Polyclinique Tereziya is a leading multispecialty hospital dedicated to providing exceptional medical care to our community.
             </p>
         </section>
-        <h3 class="text-2xl font-semibold text-indigo-600 text-center">Our Mission</h3>
-        <p class="mt-2 text-gray-600 text-center">
+        <h3 class="text-2xl font-semibold text-indigo-600 text-center" data-translate="mission_title">Our Mission</h3>
+        <p class="mt-2 text-gray-600 text-center" data-translate="mission_description">
             At Polyclinique Tereziya, our mission is to deliver comprehensive and compassionate healthcare services. We are dedicated to ensuring the well-being of every patient that walks through our doors.
         </p>
     </div>
 
     <!-- Contact Us Section -->
     <section class="bg-gray-100 shadow-lg rounded-lg p-3 mb-3 max-w-screen-md mx-auto">
-        <h2 class="text-3xl font-semibold text-indigo-600 text-center mb-6">Contact Us</h2>
+        <h2 class="text-3xl font-semibold text-indigo-600 text-center mb-6" data-translate="contact_us_title">Contact Us</h2>
         <form id="contactForm"  method="POST" class="space-y-2">
             {% csrf_token %}
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <label for="name" class="block text-sm font-medium text-gray-700" data-translate="contact_name">Name</label>
                 <input type="text" id="name" name="name" placeholder="NIYONKURU Jean" class="mt-1 block w-full p-3 border border-gray-300 rounded-md" />
             </div>
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <label for="email" class="block text-sm font-medium text-gray-700" data-translate="contact_email">Email</label>
                 <input type="email" id="email" name="email" placeholder="niyonkuru@gmail.com" class="mt-1 block w-full p-3 border border-gray-300 rounded-md" />
             </div>
             <div>
-                <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                <label for="phone" class="block text-sm font-medium text-gray-700" data-translate="contact_phone">Phone</label>
                 <input type="tel" id="phone" name="phone" placeholder="+25761281897" class="mt-1 block w-full p-3 border border-gray-300 rounded-md" />
             </div>
             <div>
-                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                <label for="message" class="block text-sm font-medium text-gray-700" data-translate="contact_message">Message</label>
                 <textarea id="message" name="message" placeholder="Your message here" rows="4" class="mt-1 block w-full p-3 border border-gray-300 rounded-md"></textarea>
             </div>
             <div class="text-center">
-                <button type="submit" class="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-md shadow-lg">
+                <button type="submit" data-translate="contact_button" class="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-md shadow-lg">
                     Send Message
                 </button>
             </div>

@@ -85,6 +85,7 @@ class Appointment(models.Model):
         ("pending", "Pending"),
         ("confirmed", "Confirmed"),
         ("cancelled", "Cancelled"),
+        ("completed", "Completed"),
     ]
     
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name="clinic_appointments")
