@@ -99,10 +99,10 @@
 
         function loadTranslation(language) {
             const translations = {
-                'fr': '../../static/translations/fr.json',
-                'sw': '../../static/translations/sw.json',
-                'rundi': '../../static/translations/rundi.json',
-                'en': '../../static/translations/en.json'
+                'fr': '{% static "translations/fr.json" %}',
+                'sw': '{% static "translations/sw.json" %}',
+                'rundi': '{% static "translations/rundi.json" %}',
+                'en': '{% static "translations/en.json" %}'
             };
 
             const url = translations[language];
